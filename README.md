@@ -1,3 +1,8 @@
+# Supabase
+1. Start containers `npx supabase start`
+2. Restart local db with `npx supabase db reset` to apply seed and migrations
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
