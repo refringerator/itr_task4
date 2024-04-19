@@ -4,6 +4,8 @@ import "./App.css";
 import { Session, createClient } from "@supabase/supabase-js";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
+import Users from "./components/Users";
+import AntConfigProvider from "./components/AntConfigProvider";
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -48,6 +50,9 @@ function App() {
           <button onClick={() => supabase.auth.signOut()}>Sign out</button>
         </>
       )}
+      <AntConfigProvider>
+        <Users />
+      </AntConfigProvider>
     </>
   );
 }
