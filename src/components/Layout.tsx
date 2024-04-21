@@ -4,7 +4,7 @@ import { Layout as AntdLayout } from "antd";
 const { Header, Content } = AntdLayout;
 
 const headerStyle: React.CSSProperties = {
-  textAlign: "center",
+  textAlign: "end",
   height: 48,
   lineHeight: "48px",
   backgroundColor: "rgba(0, 0, 0, 0.1)",
