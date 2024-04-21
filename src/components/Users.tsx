@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Button, Table, Flex } from "antd";
+import { Table } from "antd";
 import type { TableColumnsType } from "antd";
-import { DeleteFilled, LockFilled, UnlockFilled } from "@ant-design/icons";
+
+import CommandPanel from "./CommandPanel";
 
 interface DataType {
-  key: React.Key;
   id: string;
   email: string;
   lastLogin: string;
@@ -15,22 +15,26 @@ const columns: TableColumnsType<DataType> = [
   {
     title: "ID",
     dataIndex: "id",
+    width: 100,
   },
   {
     title: "e-Mail",
     dataIndex: "email",
+    width: 100,
   },
   {
     title: "Last login",
     dataIndex: "lastLogin",
+    width: 100,
   },
   {
     title: "Status",
     dataIndex: "status",
+    width: 100,
   },
 ];
 
-const App: React.FC = () => {
+const Users = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -58,40 +62,22 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Flex align="center" gap="small">
-        <Button
-          type="primary"
-          onClick={start}
-          disabled={!hasSelected}
-          loading={loading}
-          icon={<LockFilled />}
-          ghost
-        >
-          Block
-        </Button>
-        <Button
-          type="primary"
-          onClick={start}
-          disabled={!hasSelected}
-          loading={loading}
-          icon={<UnlockFilled />}
-          ghost
-        ></Button>
-        <Button
-          danger
-          onClick={start}
-          disabled={!hasSelected}
-          loading={loading}
-          icon={<DeleteFilled />}
-          ghost
-        ></Button>
-        <span style={{ marginLeft: 8 }}>
-          {hasSelected ? `Selected ${selectedRowKeys.length} items` : ""}
-        </span>
-      </Flex>
-      <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+      <CommandPanel
+        rowsSelected={hasSelected}
+        loading={loading}
+        block={start}
+        unblock={start}
+        remove={start}
+      />
+      <Table
+        bordered
+        rowKey="id"
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={data}
+      />
     </>
   );
 };
 
-export default App;
+export default Users;

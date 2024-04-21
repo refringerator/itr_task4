@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
-import "./App.css";
-
 import { Session } from "@supabase/supabase-js";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import Users from "./components/Users";
-import AntConfigProvider from "./components/AntConfigProvider";
 
 import supabase from "./supabase";
+import { AntConfigProvider, Users, Layout, Header } from "./components";
 
 function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -32,25 +29,32 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  return (
+  const header = session && (
     <>
-      {!session && (
-        <Auth
-          supabaseClient={supabase}
-          appearance={{ theme: ThemeSupa }}
-          providers={[]}
-        />
-      )}
-      {session && (
-        <>
-          <div>Logged in!</div>
-          <button onClick={() => supabase.auth.signOut()}>Sign out</button>
-        </>
-      )}
-      <AntConfigProvider>
-        <Users />
-      </AntConfigProvider>
+      <span>Hello, {session.user.email}!</span>
+      <button onClick={() => supabase.auth.signOut()}>Sign out</button>
     </>
+  );
+
+  return (
+    <AntConfigProvider>
+      <Layout
+        header={
+          <Header session={session} signout={() => supabase.auth.signOut()} />
+        }
+      >
+        {!session && (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Auth
+              supabaseClient={supabase}
+              appearance={{ theme: ThemeSupa }}
+              providers={[]}
+            />
+          </div>
+        )}
+        {session && <Users />}
+      </Layout>
+    </AntConfigProvider>
   );
 }
 
