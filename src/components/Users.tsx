@@ -1,40 +1,36 @@
 import React, { useState } from "react";
-import { Button, Table } from "antd";
+import { Button, Table, Flex } from "antd";
 import type { TableColumnsType } from "antd";
+import { DeleteFilled, LockFilled, UnlockFilled } from "@ant-design/icons";
 
 interface DataType {
   key: React.Key;
-  name: string;
-  age: number;
-  address: string;
+  id: string;
+  email: string;
+  lastLogin: string;
+  status: "Active" | "Blocked";
 }
 
 const columns: TableColumnsType<DataType> = [
   {
-    title: "Name",
-    dataIndex: "name",
+    title: "ID",
+    dataIndex: "id",
   },
   {
-    title: "Age",
-    dataIndex: "age",
+    title: "e-Mail",
+    dataIndex: "email",
   },
   {
-    title: "Address",
-    dataIndex: "address",
+    title: "Last login",
+    dataIndex: "lastLogin",
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
   },
 ];
 
-const data: DataType[] = [];
-for (let i = 0; i < 46; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    age: 32,
-    address: `London, Park Lane no. ${i}`,
-  });
-}
-
-const App: React.FC = (theme) => {
+const App: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -58,24 +54,43 @@ const App: React.FC = (theme) => {
   };
   const hasSelected = selectedRowKeys.length > 0;
 
-  console.log({ theme });
+  const data: DataType[] = [];
+
   return (
-    <div>
-      <div style={{ marginBottom: 16 }}>
+    <>
+      <Flex align="center" gap="small">
         <Button
           type="primary"
           onClick={start}
           disabled={!hasSelected}
           loading={loading}
+          icon={<LockFilled />}
+          ghost
         >
-          Reload
+          Block
         </Button>
+        <Button
+          type="primary"
+          onClick={start}
+          disabled={!hasSelected}
+          loading={loading}
+          icon={<UnlockFilled />}
+          ghost
+        ></Button>
+        <Button
+          danger
+          onClick={start}
+          disabled={!hasSelected}
+          loading={loading}
+          icon={<DeleteFilled />}
+          ghost
+        ></Button>
         <span style={{ marginLeft: 8 }}>
           {hasSelected ? `Selected ${selectedRowKeys.length} items` : ""}
         </span>
-      </div>
+      </Flex>
       <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
-    </div>
+    </>
   );
 };
 
