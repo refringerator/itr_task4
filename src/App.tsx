@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-import { Session, createClient } from "@supabase/supabase-js";
+import { Session } from "@supabase/supabase-js";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import Users from "./components/Users";
 import AntConfigProvider from "./components/AntConfigProvider";
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
+import supabase from "./supabase";
 
 function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -23,7 +20,7 @@ function App() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) supabase.auth.refreshSession();
+      // if (session) supabase.auth.refreshSession();
       setSession(session);
     });
 
