@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { SupabaseContext } from "../Context";
 
 const Auth = () => {
-  const supabase = useContext(SupabaseContext);
+  const { supabase } = useContext(SupabaseContext);
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>

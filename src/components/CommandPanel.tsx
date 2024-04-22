@@ -1,5 +1,6 @@
 import { Button, Flex } from "antd";
 import { DeleteFilled, LockFilled, UnlockFilled } from "@ant-design/icons";
+import PopConfirm from "./PopConfirm";
 
 interface ICommandPanel {
   rowsSelected: boolean;
@@ -35,15 +36,20 @@ const CommandPanel = ({
         loading={loading}
         icon={<UnlockFilled />}
         ghost
-      ></Button>
-      <Button
-        danger
-        onClick={remove}
-        disabled={!rowsSelected}
-        loading={loading}
-        icon={<DeleteFilled />}
-        ghost
-      ></Button>
+      />
+      <PopConfirm
+        onConfirm={remove}
+        description="Are you sure to delete selected users?"
+        title="Delete users"
+      >
+        <Button
+          danger
+          disabled={!rowsSelected}
+          loading={loading}
+          icon={<DeleteFilled />}
+          ghost
+        />
+      </PopConfirm>
     </Flex>
   );
 };
