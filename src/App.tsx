@@ -9,12 +9,6 @@ function App() {
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
-    supabase.rpc("get_users").then(({ data, error }) => {
-      console.log({ data, error });
-    });
-  }, []);
-
-  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       // if (session) supabase.auth.refreshSession();
       setSession(session);
