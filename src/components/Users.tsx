@@ -8,7 +8,7 @@ import { SupabaseContext } from "../Context";
 interface DataType {
   id: string;
   email: string;
-  lastLogin: string;
+  lastlogin: string;
   status: "Active" | "Blocked";
 }
 
@@ -16,7 +16,7 @@ const columns: TableColumnsType<DataType> = [
   {
     title: "ID",
     dataIndex: "id",
-    width: 100,
+    width: 200,
   },
   {
     title: "e-Mail",
@@ -25,13 +25,13 @@ const columns: TableColumnsType<DataType> = [
   },
   {
     title: "Last login",
-    dataIndex: "lastLogin",
-    width: 100,
+    dataIndex: "lastlogin",
+    width: 15,
   },
   {
     title: "Status",
     dataIndex: "status",
-    width: 100,
+    width: 15,
   },
 ];
 
@@ -45,13 +45,15 @@ const Users = () => {
     const fetchData = async () => {
       const { data, error } = await supabase.rpc("get_users");
 
-      const d = data.map((da) => ({
-        id: da.id,
-        email: da.email,
-        lastLogin: "",
-        status: "",
-      }));
-      setData(d);
+      if (error) return;
+
+      // const d = data.map((da) => ({
+      //   id: da.id,
+      //   email: da.email,
+      //   lastLogin: "",
+      //   status: "",
+      // }));
+      setData(data);
     };
 
     fetchData();
