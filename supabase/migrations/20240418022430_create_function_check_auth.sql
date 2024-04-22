@@ -34,13 +34,8 @@ begin
 end;
 $$;
 
-REVOKE ALL ON FUNCTION check_auth ()
-FROM
-  PUBLIC;
-
-GRANT
-EXECUTE ON FUNCTION check_auth () TO authenticated;
-
+REVOKE ALL ON FUNCTION check_auth () FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION check_auth () TO authenticated;
 GRANT USAGE ON SCHEMA public TO authenticated;
 
 COMMIT;

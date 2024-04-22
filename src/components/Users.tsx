@@ -36,7 +36,7 @@ const columns: TableColumnsType<DataType> = [
 ];
 
 const Users = () => {
-  const supabase = useContext(SupabaseContext);
+  const { supabase, session } = useContext(SupabaseContext);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<DataType[]>([]);
@@ -44,36 +44,26 @@ const Users = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase.rpc("get_users");
-
       if (error) return;
-
-      // const d = data.map((da) => ({
-      //   id: da.id,
-      //   email: da.email,
-      //   lastLogin: "",
-      //   status: "",
-      // }));
       setData(data);
     };
-
     fetchData();
+  }, [supabase]);
 
-    supabase.rpc("get_users").then(({ data, error }) => {
-      console.log({ data, error });
-    });
-  }, []);
-
-  const start = () => {
+  const rpc_function = async (function_name: string) => {
     setLoading(true);
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([]);
-      setLoading(false);
-    }, 1000);
+    const { data, error } = await supabase.rpc(function_name, {
+      user_ids: selectedRowKeys,
+    });
+    if (!error) setData(data);
+    setLoading(false);
+
+    if (selectedRowKeys.some((id) => id === session?.user.id))
+      supabase.auth.refreshSession();
+    setSelectedRowKeys([]);
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -88,9 +78,9 @@ const Users = () => {
       <CommandPanel
         rowsSelected={hasSelected}
         loading={loading}
-        block={start}
-        unblock={start}
-        remove={start}
+        block={() => rpc_function("block_users")}
+        unblock={() => rpc_function("unblock_users")}
+        remove={() => rpc_function("delete_users")}
       />
       <Table
         bordered

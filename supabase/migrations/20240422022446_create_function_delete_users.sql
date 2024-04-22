@@ -1,6 +1,8 @@
 BEGIN;
+
 create 
-or replace function delete_users (user_ids uuid[]) returns void language plpgsql security definer 
+or replace function delete_users (user_ids uuid[]) 
+returns setof user_type language plpgsql security definer 
 set 
   search_path = public as $$ 
 begin 
@@ -10,11 +12,12 @@ begin
         auth.users 
     where 
         id = any(user_ids);
+
+    return query select * from users_list ();
 end;
 $$;
-REVOKE ALL ON FUNCTION delete_users (user_ids uuid[]) 
-FROM 
-  PUBLIC;
+
+REVOKE ALL ON FUNCTION delete_users (user_ids uuid[]) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION delete_users (user_ids uuid[]) TO authenticated;
-GRANT USAGE ON SCHEMA public TO authenticated;
+
 COMMIT;
