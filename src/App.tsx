@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      // if (session) supabase.auth.refreshSession();
+      if (session) supabase.auth.refreshSession();
       setSession(session);
     });
 
@@ -23,9 +23,9 @@ function App() {
   }, []);
 
   return (
-    <SupabaseContext.Provider value={supabase}>
+    <SupabaseContext.Provider value={{ supabase, session }}>
       <AntConfigProvider>
-        <Layout header={<Header session={session} />}>
+        <Layout header={<Header />}>
           {!session && <Auth />}
           {session && <Users />}
         </Layout>

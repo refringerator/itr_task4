@@ -1,14 +1,9 @@
-import { Session } from "@supabase/supabase-js";
 import { Button } from "antd";
 import { useContext } from "react";
 import { SupabaseContext } from "../Context";
 
-interface HeaderProps {
-  session: Session | null;
-}
-
-const Header = ({ session }: HeaderProps) => {
-  const supabase = useContext(SupabaseContext);
+const Header = () => {
+  const { supabase, session } = useContext(SupabaseContext);
 
   return (
     session && (

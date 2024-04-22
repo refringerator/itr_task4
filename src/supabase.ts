@@ -4,13 +4,11 @@ const fetchData: typeof fetch = (...args) => {
   return new Promise((resolve, reject) => {
     fetch(...args)
       .then((response) => {
-        if (!response.ok) {
-          if (response.status === 401)
-            supabase.auth.getSession().then(({ data: { session } }) => {
-              session && supabase.auth.signOut();
-            });
-          throw new Error("Response error");
-        }
+        if (response.status === 401)
+          supabase.auth.getSession().then(({ data: { session } }) => {
+            session && supabase.auth.refreshSession();
+          });
+
         return response;
       })
       .then((data) => {
